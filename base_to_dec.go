@@ -1,7 +1,6 @@
 package algorithms
 
 import (
-	"math"
 	"strconv"
 )
 
@@ -16,20 +15,21 @@ import (
 func BaseToDec(value string, base int) int {
 
 	var cv int
-	cs := Reverse(value)
+	// base^bit place in value
+	multiplier := 1
 
 	for i := len(value) - 1; i >= 0; i-- {
-		s, err := strconv.Atoi(string(cs[i]))
-		if err != nil {
-			s = hexToDec(string(cs[i]))
-		}
-		cv += int(s) * int(math.Pow(float64(base), float64(i)))
+		s := hexToDec(value[i])
+		cv += s * multiplier
+		multiplier *= base
 	}
 
 	return cv
 }
 
-func hexToDec(s string) int {
+func hexToDec(b byte) int {
+	s := string(b)
+
 	switch s {
 	case "A":
 		return 10
@@ -44,6 +44,7 @@ func hexToDec(s string) int {
 	case "F":
 		return 15
 	default:
-		return 0
+		n, _ := strconv.Atoi(s)
+		return n
 	}
 }
